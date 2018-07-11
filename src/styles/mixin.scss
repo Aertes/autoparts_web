@@ -1,0 +1,220 @@
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+@mixin scrollBar {
+  &::-webkit-scrollbar-track-piece {
+    background: #d3dce6;
+  }
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #99a9bf;
+    border-radius: 20px;
+  }
+}
+
+@mixin relative {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+
+/*盒模型*/
+@mixin flex(){
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: flex;
+}
+.flex{
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: flex;
+}
+@mixin clear-flex(){
+  flex: none;
+}
+.clear-flex{
+  flex: none;
+}
+/*主轴的方向*/
+//主轴为水平方向，起点在左端（默认）
+@mixin flex-direction-row(){
+  -webkit-flex-direction:row;
+  flex-direction:row;
+}
+.flex-direction-row{
+  -webkit-flex-direction:row;
+  flex-direction:row;
+}
+//主轴为水平方向，起点在右端
+@mixin flex-direction-row-reverse(){
+  -webkit-flex-direction:row-reverse;
+  flex-direction:row-reverse;
+}
+.flex-direction-row-reverse{
+  -webkit-flex-direction:row-reverse;
+  flex-direction:row-reverse;
+}
+//竖向排列（由上至下）
+@mixin flex-direction-column(){
+  -webkit-flex-direction:column;
+  flex-direction:column;
+}
+.flex-direction-column{
+  -webkit-flex-direction:column;
+  flex-direction:column;
+}
+//竖身排列（由上至上）
+@mixin flex-direction-column-reverse(){
+  -webkit-flex-direction:column-reverse;
+  flex-direction:column-reverse;
+}
+.flex-direction-column-reverse{
+  -webkit-flex-direction:column-reverse;
+  flex-direction:column-reverse;
+}
+
+/*交叉轴对齐方式*/
+//交叉轴的中点对齐
+@mixin align-items-center(){
+  -webkit-align-items:center;
+  align-items:center;
+}
+.align-items-center{
+  -webkit-align-items:center;
+  align-items:center;
+}
+//交叉轴的起点对齐
+@mixin align-items-start(){
+  -webkit-align-items:flex-start;
+  align-items:flex-start;
+}
+.align-items-start{
+  -webkit-align-items:flex-start;
+  align-items:flex-start;
+}
+//交叉轴的终点对齐
+@mixin align-items-end(){
+  -webkit-align-items:flex-end;
+  align-items:flex-end;
+}
+.align-items-end{
+  -webkit-align-items:flex-end;
+  align-items:flex-end;
+}
+//项目的第一行文字的基线对齐
+@mixin align-items-baseline(){
+  -webkit-align-items:baseline;
+  align-items:baseline;
+}
+.align-items-baseline{
+  -webkit-align-items:baseline;
+  align-items:baseline;
+}
+//（默认值）：如果项目未设置高度或设为auto，将占满整个容器的高度
+@mixin align-items-stretch(){
+  -webkit-align-items:stretch;
+  align-items:stretch;
+}
+.align-items-stretch{
+  -webkit-align-items:stretch;
+  align-items:stretch;
+}
+
+/*主轴对方方式*/
+//（默认值）：左对齐
+@mixin justify-content-start(){
+  -webkit-justify-content: flex-start;
+  justify-content:flex-start;
+}
+.justify-content-start{
+  -webkit-justify-content: flex-start;
+  justify-content:flex-start;
+}
+//右对齐
+@mixin justify-content-end(){
+  -webkit-justify-content: flex-end;
+  justify-content:flex-end;
+}
+.justify-content-end{
+  -webkit-justify-content: flex-end;
+  justify-content:flex-end;
+}
+//居中
+@mixin justify-content-center(){
+  -webkit-justify-content: center;
+  justify-content:center;
+}
+.justify-content-center{
+  -webkit-justify-content: center;
+  justify-content:center;
+}
+//两端对齐，项目之间的间隔都相等
+@mixin justify-content-space-between(){
+  -webkit-justify-content: space-between;
+  justify-content:space-between;
+}
+.justify-content-space-between{
+  -webkit-justify-content: space-between;
+  justify-content:space-between;
+}
+//每个项目两侧的间隔相等。所以，项目之间的间隔比项目与边框的间隔大一倍
+@mixin justify-content-space-around(){
+  -webkit-justify-content: space-around;
+  justify-content:space-around;
+}
+.justify-content-space-around{
+  -webkit-justify-content: space-around;
+  justify-content:space-around;
+}
+
+
+/*自动分配（宽、高）*/
+.flex-size-1{
+  -webkit-flex:1;
+  flex:1;
+}
+
+@mixin flex-size($num){
+  -webkit-flex:$num;
+  flex:$num;
+}
+
+.no-select{
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+@mixin no-select(){
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.flex-body{
+  width:100%;
+  overflow:hidden;
+  @include flex();
+  @include flex-direction-column();
+}
+
+.flex-body-row{
+  width:100%;
+  overflow:hidden;
+  @include flex();
+  @include flex-direction-row();
+}
+
+@function pxTorem($px){
+  @return $px / 16px * 1rem;
+}
