@@ -32,7 +32,7 @@ export const constantRouterMap = [
     name: 'Home',
     // hidden: true,
     children: [{
-      path: 'home',
+      path: 'index',
       component: () => import('@/views/home/index'),
       meta: { title: '首页', icon: 'tree' }
     }]
