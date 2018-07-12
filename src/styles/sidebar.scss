@@ -36,6 +36,12 @@
       display: inline-block;
       width: 100%;
       overflow: hidden;
+      &.router-link-active{
+        .is-active{
+          background-color: rgba(16, 142, 233, 0.1) !important;
+          border-left: 5px solid #108ee9;
+        }
+      }
     }
     .svg-icon {
       margin-right: 16px;

@@ -68,7 +68,7 @@ export const constantRouterMap = [
         path: 'index',
         name: 'Quote',
         component: () => import('@/views/quote/index'),
-        meta: { title: '报价管理', icon: 'form' }
+        meta: { title: '报价管理', icon: 'quote' }
       }
     ]
   },
@@ -80,7 +80,7 @@ export const constantRouterMap = [
         path: 'index',
         name: 'Sales',
         component: () => import('@/views/sales/index'),
-        meta: { title: '退货管理', icon: 'form' }
+        meta: { title: '退货管理', icon: 'sales' }
       }
     ]
   },

@@ -4,7 +4,9 @@
     <breadcrumb></breadcrumb>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
+        <svg-icon icon-class="user"></svg-icon>
+        <!-- <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'"> -->
+        <span class="user-avatar">admin</span>
         <i class="el-icon-caret-bottom"></i>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
@@ -71,7 +73,7 @@ export default {
     height: 80px;
     display: inline-block;
     position: absolute;
-    right: 35px;
+    right: 60px;
     .avatar-wrapper {
       cursor: pointer;
       margin-top: 5px;
@@ -84,7 +86,7 @@ export default {
       .el-icon-caret-bottom {
         position: absolute;
         right: -20px;
-        top: 25px;
+        top: 33px;
         font-size: 12px;
       }
     }
