@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/Api'
+import { clientLogin, logout } from '@/api/Api'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
@@ -29,42 +29,42 @@ const user = {
     Login({ commit }, userInfo) {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        debugger
-        login(username, userInfo.password).then(response => {
-          debugger
+        clientLogin(username, userInfo.userpsd).then(response => {
           const data = response.data
           setToken(data.token)
           commit('SET_TOKEN', data.token)
           resolve()
         }).catch(error => {
-          debugger
           reject(error)
         })
       })
     },
     // 获取用户信息
-    GetInfo({ commit, state }) {
-      return new Promise((resolve, reject) => {
-        getInfo(state.token).then(response => {
-          const data = response.data
-          if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-            commit('SET_ROLES', data.roles)
-          } else {
-            reject('getInfo: roles must be a non-null array !')
-          }
-          commit('SET_NAME', data.name)
-          commit('SET_AVATAR', data.avatar)
-          resolve(response)
-        }).catch(error => {
-          reject(error)
-        })
-      })
-    },
+    // GetInfo({ commit, state }) {
+    //   return new Promise((resolve, reject) => {
+    //     getInfo(state.token).then(response => {
+    //       const data = response.data
+    //       if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
+    //         commit('SET_ROLES', data.roles)
+    //       } else {
+    //         reject('getInfo: roles must be a non-null array !')
+    //       }
+    //       commit('SET_NAME', data.name)
+    //       commit('SET_AVATAR', data.avatar)
+    //       resolve(response)
+    //     }).catch(error => {
+    //       reject(error)
+    //     })
+    //   })
+    // },
 
     // 登出
     LogOut({ commit, state }) {
+      const tokens = { accesstoken: state.token }
+      debugger
       return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
+        logout(tokens).then(() => {
+          debugger
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
           removeToken()

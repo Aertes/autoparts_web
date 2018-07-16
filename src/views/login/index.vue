@@ -8,11 +8,11 @@
         </span>
         <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="username" />
       </el-form-item>
-      <el-form-item prop="password">
+      <el-form-item prop="userpsd">
         <span class="svg-container">
           <svg-icon icon-class="password"></svg-icon>
         </span>
-        <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on"
+        <el-input name="userpsd" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.userpsd" autoComplete="on"
           placeholder="password"></el-input>
           <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye" /></span>
       </el-form-item>
@@ -52,11 +52,11 @@ export default {
     return {
       loginForm: {
         username: 'admin',
-        password: 'admin'
+        userpsd: 'admin'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePass }]
+        userpsd: [{ required: true, trigger: 'blur', validator: validatePass }]
       },
       loading: false,
       pwdType: 'password'
@@ -71,7 +71,6 @@ export default {
       }
     },
     handleLogin() {
-      // this.$router.push({ path: '/home/index' })
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true

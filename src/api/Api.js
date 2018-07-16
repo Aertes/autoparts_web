@@ -1,28 +1,30 @@
 import request from '@/utils/request'
 
-export function login(username, password) {
+export function clientLogin(username, userpsd) {
   return request({
-    url: '/user/login',
+    url: '/customers/autopartsClientLogin',
     method: 'post',
     data: {
       username,
-      password
+      userpsd
     }
   })
 }
 
-export function getInfo(token) {
-  return request({
-    url: '/user/info',
-    method: 'get',
-    params: { token }
-  })
-}
+// export function getInfo(token) {
+//   return request({
+//     url: '/user/info',
+//     method: 'get',
+//     params: { token }
+//   })
+// }
 
-export function logout() {
+export function logout(params) {
+  debugger
   return request({
-    url: '/user/logout',
-    method: 'post'
+    url: '/customers/logout',
+    method: 'post',
+    data: params
   })
 }
 
