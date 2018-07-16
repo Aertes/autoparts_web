@@ -153,13 +153,20 @@ a:hover {
       }
     }
     .el-table__body-wrapper{
-
       .is-plain{
         background-color: #fff;
         &:hover,
         &:focus,
         &:active{
           color: #3a8ee6;
+        }
+      }
+      .del{
+        &:hover,
+        &:focus,
+        &:active{
+          color: #606266;
+          border: 1px solid #adadad;
         }
       }
     }
@@ -206,14 +213,42 @@ a:hover {
       margin-left: 10px;
       .el-input__inner{
         color: #3a8ee6;
+        padding-right: 15px;
       }
     }
   }
+
   .el-form-item.is-required .el-form-item__label:before{
     position: absolute;
     left: -10px;
     top: 2px;
   }
+  .clearfix{
+    .el-input--suffix{
+      .el-input__inner{
+        padding-right: 15px;
+      }
+    }
+  }
+  .demo-ruleForm{
+    .el-input--suffix{
+      .el-input__inner{
+        padding-right: 35px;
+      }
+    }
+  }
+  .input-flex{
+    .el-form-item__content{
+      @include flex();
+      .el-input{
+        width: 60%;
+      }
+      span{
+        margin-left: 10px;
+      }
+    }
+  }
+
 }
 
 .el-dialog__wrapper{

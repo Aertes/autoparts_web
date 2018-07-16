@@ -118,9 +118,9 @@ export default {
       this.$message('submit!')
     },
     onCancel() {
-      this.$message({
-        message: 'cancel!',
-        type: 'warning'
+      const searchData = this.search
+      Object.keys(searchData).forEach((key, i) => {
+        searchData[key] = ''
       })
     },
     edit(row) {
