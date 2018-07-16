@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/login'
+import { login, logout, getInfo } from '@/api/Api'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
@@ -29,17 +29,19 @@ const user = {
     Login({ commit }, userInfo) {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
+        debugger
         login(username, userInfo.password).then(response => {
+          debugger
           const data = response.data
           setToken(data.token)
           commit('SET_TOKEN', data.token)
           resolve()
         }).catch(error => {
+          debugger
           reject(error)
         })
       })
     },
-
     // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {

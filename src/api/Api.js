@@ -25,3 +25,11 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function storeList(params) {
+  return request({
+    url: '/client/clienlist',
+    method: 'post',
+    data: params
+  })
+}
