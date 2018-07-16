@@ -34,7 +34,7 @@ export const constantRouterMap = [
     children: [{
       path: 'index',
       component: () => import('@/views/home/index'),
-      meta: { title: '首页', icon: 'tree' }
+      meta: { title: '首页', icon: 'home' }
     }]
   },
 
@@ -92,7 +92,7 @@ export const constantRouterMap = [
         path: 'index',
         name: 'Order',
         component: () => import('@/views/order/index'),
-        meta: { title: '订单管理', icon: 'form' }
+        meta: { title: '订单管理', icon: 'order' }
       }
     ]
   },
@@ -104,7 +104,7 @@ export const constantRouterMap = [
         path: 'index',
         name: 'Parts',
         component: () => import('@/views/parts/index'),
-        meta: { title: '配件管理', icon: 'form' }
+        meta: { title: '配件管理', icon: 'parts' }
       }
     ]
   },
@@ -116,7 +116,7 @@ export const constantRouterMap = [
         path: 'index',
         name: 'Store',
         component: () => import('@/views/store/index'),
-        meta: { title: '门店管理', icon: 'form' }
+        meta: { title: '门店管理', icon: 'store' }
       }
     ]
   },
@@ -128,19 +128,28 @@ export const constantRouterMap = [
         path: 'index',
         name: 'Statistics',
         component: () => import('@/views/statistics/index'),
-        meta: { title: '统计', icon: 'form' }
+        meta: { title: '统计', icon: 'statistics' }
       }
     ]
   },
   {
     path: '/account',
     component: Layout,
+    name: 'Account',
+    redirect: '/account/userIndex',
+    meta: { title: '账户管理', icon: 'account' },
     children: [
       {
-        path: 'index',
-        name: 'Account',
-        component: () => import('@/views/account/index'),
-        meta: { title: '账户管理', icon: 'form' }
+        path: 'userIndex',
+        name: 'User',
+        component: () => import('@/views/account/userIndex'),
+        meta: { title: '账户管理', icon: '00' }
+      },
+      {
+        path: 'companyIndex',
+        name: 'Company',
+        component: () => import('@/views/account/companyIndex'),
+        meta: { title: '配件公司管理', icon: '00' }
       }
     ]
   },

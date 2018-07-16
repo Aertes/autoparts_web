@@ -96,6 +96,9 @@ a:hover {
     border-radius: 5px;
     padding: 22px 20px 0 20px;
     position: relative;
+    .search-row{
+      width: 85%;
+    }
     .el-form-item__label{
       text-align: justify;
       text-align-last: justify;

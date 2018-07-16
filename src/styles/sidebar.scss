@@ -100,6 +100,26 @@
   .el-menu--collapse .el-menu .el-submenu {
     min-width: 180px !important;
   }
+  .menu-wrapper{
+    .el-submenu__title{
+      box-sizing: border-box;
+      padding-left: 5px;
+      border-left: 5px solid #FFF;
+      font-size: 18px;
+      &:hover{
+        background-color: rgba(16, 142, 233, 0.1) !important;
+      }
+    }
+    .el-menu{
+      .el-menu-item{
+        background-color: #fff !important;
+        &:hover {
+          background-color: $menuHover !important;
+        }
+      }
+    }
+  }
+
 
   //适配移动端
   .mobile {

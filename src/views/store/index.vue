@@ -1,24 +1,26 @@
 <template>
   <div class="app-container">
     <el-form ref="form" :model="search" label-width="100px" class="clearfix">
-      <el-form-item label="门店编号:" class="fl">
-        <el-input v-model="search.name" placeholder="请输入门店编号"></el-input>
-      </el-form-item>
-      <el-form-item label="门店名称:" class="fl">
-        <el-input v-model="search.name" placeholder="请输入门店名称"></el-input>
-      </el-form-item>
-      <el-form-item label="门店电话:" class="fl">
-        <el-input v-model="search.name" placeholder="请输入门店电话"></el-input>
-      </el-form-item>
-      <el-form-item label="类别:" class="fl">
-        <el-select v-model="search.region" placeholder="请选择类别">
-          <el-option label="Zone one" value="shanghai"></el-option>
-          <el-option label="Zone two" value="beijing"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="备注:"  class="fl w38">
-        <el-input  v-model="search.desc" placeholder="请输入备注"></el-input>
-      </el-form-item>
+      <div class="search-row clearfix">
+        <el-form-item label="门店编号:" class="fl">
+          <el-input v-model="search.name" placeholder="请输入门店编号"></el-input>
+        </el-form-item>
+        <el-form-item label="门店名称:" class="fl">
+          <el-input v-model="search.name" placeholder="请输入门店名称"></el-input>
+        </el-form-item>
+        <el-form-item label="门店电话:" class="fl">
+          <el-input v-model="search.name" placeholder="请输入门店电话"></el-input>
+        </el-form-item>
+        <el-form-item label="类别:" class="fl">
+          <el-select v-model="search.region" placeholder="请选择类别">
+            <el-option label="Zone one" value="shanghai"></el-option>
+            <el-option label="Zone two" value="beijing"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="备注:"  class="fl w38">
+          <el-input  v-model="search.desc" placeholder="请输入备注"></el-input>
+        </el-form-item>
+      </div>
       <el-form-item class="btn">
         <el-button type="primary" @click="onSearch">查询</el-button>
         <el-button @click="onCancel">重置</el-button>

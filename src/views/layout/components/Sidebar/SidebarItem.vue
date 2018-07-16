@@ -12,7 +12,7 @@
         </el-menu-item>
       </router-link>
 
-      <!-- <el-submenu v-else :index="item.name||item.path" :key="item.name">
+      <el-submenu v-else :index="item.name||item.path" :key="item.name">
         <template slot="title">
           <svg-icon v-if="item.meta&&item.meta.icon" :icon-class="item.meta.icon"></svg-icon>
           <span v-if="item.meta&&item.meta.title" slot="title">{{item.meta.title}}</span>
@@ -28,7 +28,7 @@
             </el-menu-item>
           </router-link>
         </template>
-      </el-submenu> -->
+      </el-submenu>
 
     </template>
   </div>
@@ -67,7 +67,6 @@ export default {
       box-sizing: border-box;
       padding-left: 5px;
       border-left: 5px solid #FFF;
-      padding-left: 20% !important;
       font-size: 18px;
       .is-active{
         background-color: rgba(16,142,233, 0.1) !important;
@@ -76,7 +75,7 @@ export default {
     }
     .el-menu-item:hover,
     .el-menu-item:focus{
-      background-color: rgba(16,142,233, 0.1) !important;
+      background-color: rgba(16, 142, 233, 0.1) !important;
       border-left: 5px solid rgba(16,142,233, 1);
     }
     .log{

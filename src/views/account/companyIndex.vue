@@ -2,26 +2,23 @@
   <div class="app-container">
     <el-form ref="form" :model="search" label-width="100px" class="clearfix">
       <div class="search-row clearfix">
-        <el-form-item label="配件编号:" class="fl">
-          <el-input v-model="search.name" placeholder="请输入配件编号"></el-input>
+        <el-form-item label="姓名:" class="fl">
+          <el-input v-model="search.name" placeholder="请输入姓名"></el-input>
         </el-form-item>
-        <el-form-item label="配件名称:" class="fl">
-          <el-input v-model="search.name" placeholder="请输入配件名称"></el-input>
+        <el-form-item label="手机号:" class="fl">
+          <el-input v-model="search.name" placeholder="请输入手机号"></el-input>
         </el-form-item>
-        <el-form-item label="配件标准:" class="fl">
-          <el-select v-model="search.region" placeholder="请选择配件标准">
+        <el-form-item label="公司名称:" class="fl">
+          <el-input v-model="search.name" placeholder="请输入公司名称"></el-input>
+        </el-form-item>
+        <el-form-item label="状态:" class="fl">
+          <el-select v-model="search.region" placeholder="请选择状态">
             <el-option label="Zone one" value="shanghai"></el-option>
             <el-option label="Zone two" value="beijing"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="品牌:" class="fl">
-          <el-input v-model="search.name" placeholder="请输入品牌"></el-input>
-        </el-form-item>
-        <el-form-item label="配件类型:" class="fl">
-          <el-select v-model="search.region" placeholder="请选择配件类型">
-            <el-option label="Zone one" value="shanghai"></el-option>
-            <el-option label="Zone two" value="beijing"></el-option>
-          </el-select>
+        <el-form-item label="管理品牌:" class="fl">
+          <el-input v-model="search.name" placeholder="请输入管理品牌"></el-input>
         </el-form-item>
       </div>
       <el-form-item class="btn">
@@ -31,23 +28,20 @@
     </el-form>
     <el-row>
       <el-button type="primary" @click="create">新建</el-button>
-      <el-button type="primary" @click="importFile">导入</el-button>
     </el-row>
     <el-table :data="tableData" border-bottom style="width: 100%" v-loading="loading">
-      <el-table-column prop="date" align="left" label="配件编号"></el-table-column>
-      <el-table-column prop="date" align="left" label="配件类别"></el-table-column>
-      <el-table-column prop="name" align="left" label="配件名称"></el-table-column>
-      <el-table-column prop="name" align="left" label="品牌"></el-table-column>
-      <el-table-column prop="city" align="left" label="件号"></el-table-column>
-      <el-table-column prop="zip" align="left" label="规格"></el-table-column>
-      <el-table-column prop="name" align="left" label="单位"></el-table-column>
-      <el-table-column prop="zip" align="left" label="配件标准"></el-table-column>
-      <el-table-column prop="zip" align="left" label="销价"></el-table-column>
+      <el-table-column prop="date" align="left" label="姓名"></el-table-column>
+      <el-table-column prop="date" align="left" label="手机号"></el-table-column>
+      <el-table-column prop="name" align="left" label="公司名称"></el-table-column>
+      <el-table-column prop="name" align="left" label="公司电话"></el-table-column>
+      <el-table-column prop="city" align="left" label="公司地址"></el-table-column>
+      <el-table-column prop="zip" align="left" label="管理品牌"></el-table-column>
+      <el-table-column prop="name" align="left" label="状态"></el-table-column>
       <el-table-column label="操作" align="center" width="280">
         <template slot-scope="scope">
           <el-button @click.native.prevent="detail(scope.row)" type="primary" >查看</el-button>
           <el-button type="primary" @click.native.prevent="edit(scope.row)" plain >编辑</el-button>
-          <el-button @click.native.prevent="del(scope.$index, scope.row, tableData)" plain class="del" >删除</el-button>
+          <el-button @click.native.prevent="invalid(scope.$index, scope.row, tableData)" plain class="del" >作废</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -61,13 +55,13 @@
       layout="prev, pager, next, jumper"
       :total="tablePage.total">
     </el-pagination>
-    <add-edit-dialog :dialogShow="DialogShow" @close="DialogHide" @success="tableData" :parts='parts'></add-edit-dialog>
-    <detail-dialog :dialogDetailShow="DialogDetailShow" @close="DialogDetailHide" :parts='parts'></detail-dialog>
+    <add-edit-dialog :dialogShow="DialogShow" @close="DialogHide" @success="tableData" :companyId='companyId'></add-edit-dialog>
+    <detail-dialog :dialogDetailShow="DialogDetailShow" @close="DialogDetailHide" :companyId='companyId'></detail-dialog>
   </div>
 </template>
 <script>
-import AddEditDialog from './add-edit'
-import DetailDialog from './detail'
+import AddEditDialog from './company-add-edit'
+import DetailDialog from './company-detail'
 export default {
   data() {
     return {
@@ -201,7 +195,7 @@ export default {
         rows: 5,
         total: 100
       },
-      parts: '',
+      companyId: '',
       DialogShow: false,
       DialogDetailShow: false,
       loading: false
@@ -225,11 +219,11 @@ export default {
     },
     edit(row) {
       console.log(row)
-      this.parts = `${row.zip}`
+      this.companyId = `${row.zip}`
       this.DialogShow = true
     },
-    del(index, id, rows) {
-      this.$confirm('此操作将永久删除该项, 是否继续?', '提示', {
+    invalid(index, id, rows) {
+      this.$confirm('此操作将永久作废该项, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -249,10 +243,9 @@ export default {
     create() {
       this.DialogShow = true
     },
-    importFile() {},
     DialogHide() {
       this.DialogShow = false
-      this.parts = ''
+      this.companyId = ''
     },
     detail(row) {
       this.DialogDetailShow = true
