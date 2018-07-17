@@ -61,6 +61,8 @@
 </template>
 
 <script>
+import { storeDetail } from '@/api/Api'
+import store from '@/store'
 export default {
   name: 'detail',
   props: {
@@ -75,23 +77,15 @@ export default {
   },
   data() {
     return {
-      storeData: {
-        apcno: '123123', // 门店编号
-        apcname: '123123', // 门店名称
-        apcaddress: '123123', // 门店地址
-        apcphone: '123123', // 门店电话
-        apccontactname: '123123', // 联系人
-        apccontacttelno: '123123', // 联系人电话
-        apcloginname: '123123', // 登录账号
-        apcloginpwd: '123123', // 密码
-        apcloginpwdsure: '123123', // 请确认密码
-        apcremark: '123123'// 备注
-      }
+      storeData: null
     }
   },
   computed: {
     dialogDetailStoreVisible: {
       get() {
+        if (this.dialogDetailShow) {
+          this.detail()
+        }
         return this.dialogDetailShow
       },
       set(value) {
@@ -102,6 +96,33 @@ export default {
     }
   },
   methods: {
+    detail() {
+      const data = { apcid: this.storeId }
+      return new Promise((resolve, reject) => {
+        storeDetail(data).then(res => {
+          if (res.status !== -1) {
+            if (res.status === 0) {
+              console.log(res.data)
+              this.storeData = res.data
+            } else {
+              this.$notify({
+                showClose: true,
+                message: res.msg,
+                type: 'warning',
+                offset: 100,
+                duration: 2000
+              })
+            }
+          } else {
+            store.dispatch('FedLogOut').then(() => {
+              location.reload()// 为了重新实例化vue-router对象 避免bug
+            })
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
     clearData() {
       this.$emit('close')
       // this.storeData = {

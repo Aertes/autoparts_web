@@ -1,17 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
-    <defs></defs>
-    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="维修厂管理" fill="#6F7178" fill-rule="nonzero">
-            <g id="Group-396">
-                <path d="M20,16 L20,0 L0,0 L0,16 L9,16 L9,18 L6,18 L6,20 L14,20 L14,18 L11,18 L11,16 L20,16 Z M2,12 L2,2 L18,2 L18,12 L2,12 Z" id="Path_87"></path>
-                <rect id="Rectangle_58" x="4" y="3.4" width="2" height="1.9"></rect>
-                <rect id="Rectangle_59" x="4" y="6.25" width="2" height="1.9"></rect>
-                <rect id="Rectangle_60" x="8" y="3.4" width="2" height="1.9"></rect>
-                <rect id="Rectangle_61" x="8" y="6.25" width="2" height="1.9"></rect>
-                <rect id="Rectangle_62" x="4" y="9.1" width="2" height="1.9"></rect>
-            </g>
-        </g>
-    </g>
-</svg>
+<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1531805330842" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1185" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M992 800V32H32v768h432v96H320v96h384v-96h-144v-96h432zM128 608V128h768v480H128z"  p-id="1186"></path><path d="M204.8 174.08h102.4v97.28H204.8zM204.8 320h102.4v97.28H204.8zM409.6 174.08h102.4v97.28H409.6zM409.6 320h102.4v97.28H409.6zM204.8 465.92h102.4V563.2H204.8z"  p-id="1187"></path></svg>

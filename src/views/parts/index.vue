@@ -29,9 +29,20 @@
         <el-button @click="onCancel">重置</el-button>
       </el-form-item>
     </el-form>
-    <el-row>
-      <el-button type="primary" @click="create">新建</el-button>
-      <el-button type="primary" @click="importFile">导入</el-button>
+    <!-- action="https://jsonplaceholder.typicode.com/posts/" -->
+    <el-row class="clearfix">
+      <el-button type="primary" @click="create" class="create">新建</el-button>
+      <el-upload
+        class="upload-demo"
+        :action='uploadUrl'
+        :show-file-list="false"
+        :on-success="fileUploadSuccess"
+        :before-upload="beforeFileUpload"
+        method:="post"
+        accept=''>
+        <el-button type="primary">导入</el-button>
+      </el-upload>
+      <!-- <el-button type="primary" @click="importFile">导入</el-button> -->
     </el-row>
     <el-table :data="tableData" border-bottom style="width: 100%" v-loading="loading">
       <el-table-column prop="date" align="left" label="配件编号"></el-table-column>
@@ -204,7 +215,9 @@ export default {
       parts: '',
       DialogShow: false,
       DialogDetailShow: false,
-      loading: false
+      loading: false,
+      fileList: [],
+      uploadUrl: process.env.BASE_API + '/files/upload'
     }
   },
   created() {
@@ -248,6 +261,22 @@ export default {
     },
     create() {
       this.DialogShow = true
+    },
+    fileUploadSuccess(res, file) {
+      console.log(res)
+      if (res.status === 0) {
+        this.initTableData()
+      } else {
+        this.$message.error(res.msg)
+      }
+    },
+    beforeFileUpload(file) {
+      if (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+        return true
+      } else {
+        this.$message.error('请导入正确的Excel表格')
+        return false
+      }
     },
     importFile() {},
     DialogHide() {

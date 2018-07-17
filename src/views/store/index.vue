@@ -11,12 +11,12 @@
         <el-form-item label="门店电话:" class="fl">
           <el-input v-model="search.name" placeholder="请输入门店电话"></el-input>
         </el-form-item>
-        <el-form-item label="类别:" class="fl">
+        <!-- <el-form-item label="类别:" class="fl">
           <el-select v-model="search.region" placeholder="请选择类别">
             <el-option label="Zone one" value="shanghai"></el-option>
             <el-option label="Zone two" value="beijing"></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="备注:"  class="fl w38">
           <el-input  v-model="search.desc" placeholder="请输入备注"></el-input>
         </el-form-item>
@@ -30,13 +30,13 @@
       <el-button type="primary" @click="create">新建门店</el-button>
     </el-row>
     <el-table :data="tableData" border-bottom style="width: 100%" >
-      <el-table-column prop="date" align="left" label="门店编号"></el-table-column>
-      <el-table-column prop="name" align="left" label="门店名称"></el-table-column>
-      <el-table-column prop="address" align="left" label="地址" width="300" ></el-table-column>
-      <el-table-column prop="city" align="left" label="类别"></el-table-column>
-      <el-table-column prop="zip" align="left" label="门店电话"></el-table-column>
-      <el-table-column prop="name" align="left" label="联系人"></el-table-column>
-      <el-table-column prop="zip" align="left" label="联系人电话"></el-table-column>
+      <el-table-column prop="apcno" align="left" label="门店编号"></el-table-column>
+      <el-table-column prop="apcname" align="left" label="门店名称"></el-table-column>
+      <el-table-column prop="apcaddress" align="left" label="地址"></el-table-column>
+      <!-- <el-table-column prop="apcdelflag" align="left" label="类别"></el-table-column> -->
+      <el-table-column prop="apcphone" align="left" label="门店电话"></el-table-column>
+      <el-table-column prop="apccontactname" align="left" label="联系人"></el-table-column>
+      <el-table-column prop="apccontacttelno" align="left" label="联系人电话"></el-table-column>
       <el-table-column label="操作" align="center" width="200">
         <template slot-scope="scope">
           <el-button @click="detail(scope.row)" type="primary" >查看</el-button>
@@ -48,11 +48,11 @@
       class="pagination"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page="tablePage.page"
-      :page-size="tablePage.row"
+      :current-page="search.page"
+      :page-size="search.row"
       background
       layout="prev, pager, next, jumper"
-      :total="tablePage.total">
+      :total="search.total">
     </el-pagination>
     <add-edit-dialog :dialogShow="DialogShow" @close="DialogHide" @success="tableData" :storeId='storeId'></add-edit-dialog>
     <detail-dialog :dialogDetailShow="DialogDetailShow" @close="DialogDetailHide" :storeId='storeId'></detail-dialog>
@@ -61,61 +61,64 @@
 <script>
 import AddEditDialog from './add-edit'
 import DetailDialog from './detail'
+import { storeList } from '@/api/Api'
+import store from '@/store'
+// import Api from '@/api/Api'
 export default {
   data() {
     return {
       search: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
-      },
-      tableData: [
-        {
-          date: '2016-05-03',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-02',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }
-      ],
-      tablePage: {
+        data: {
+          apcno: '', // 门店编号
+          apcname: '', // 门店名称
+          apcphone: '', // 门店电话
+          apcremark: '' // 备注
+        },
         page: 1,
-        rows: 5,
-        total: 100
+        rows: 10,
+        total: 0,
+        sidx: 'apccreatedate',
+        sord: 'desc'
       },
+      tableData: [],
       storeId: '',
       DialogShow: false,
       DialogDetailShow: false
     }
   },
+  created() {
+    this.initTableData()
+  },
   methods: {
+    initTableData() {
+      this.loading = true
+      const data = this.search
+      return new Promise((resolve, reject) => {
+        storeList(data).then(res => {
+          if (res.status !== -1) {
+            if (res.status === 0) {
+              this.search.page = res.totalpages
+              this.search.total = res.totalrecords
+              this.tableData = res.datalist
+            } else {
+              this.$notify({
+                showClose: true,
+                message: res.msg,
+                type: 'warning',
+                offset: 100,
+                duration: 2000
+              })
+            }
+          } else {
+            store.dispatch('FedLogOut').then(() => {
+              location.reload()// 为了重新实例化vue-router对象 避免bug
+            })
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
     onSearch() {
       this.$message('submit!')
     },
@@ -127,7 +130,7 @@ export default {
     },
     edit(row) {
       console.log(row)
-      this.storeId = `${row.zip}`
+      this.storeId = `${row.apcid}`
       this.DialogShow = true
     },
     create() {
@@ -138,8 +141,8 @@ export default {
       this.storeId = ''
     },
     detail(row) {
+      this.storeId = `${row.apcid}`
       this.DialogDetailShow = true
-      console.log(row)
     },
     DialogDetailHide() {
       this.DialogDetailShow = false

@@ -146,6 +146,16 @@ a:hover {
       background-color: #00CC74;
       border-color: #00CC74;
     }
+    .create{
+      float: left;
+    }
+    .upload-demo{
+      float: left;
+      margin-left: 20px;
+      .el-upload-list{
+        display: none;
+      }
+    }
   }
   .el-table{
     .el-table__header-wrapper{
