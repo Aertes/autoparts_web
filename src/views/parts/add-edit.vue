@@ -1,43 +1,43 @@
 <template>
   <div class="dialog-store-creat-and-edit-page">
-    <el-dialog :title="parts ? '编辑配件' : '新建配件'" :visible.sync="dialogAddAndEditPartsVisible" :close-on-click-modal="false" @close="clearData('ruleForm')" width="50rem">
+    <el-dialog :title="partsId ? '编辑配件' : '新建配件'" :visible.sync="dialogAddAndEditPartsVisible" :close-on-click-modal="false" @close="clearData('ruleForm')" width="50rem">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
           <div class="div-warp">
             <div class="div-left item-half">
               <el-form-item label="配件编号:">
-                <el-input v-model="ruleForm.apcno"  placeholder="新建后自动生成" disabled ></el-input>
+                <el-input v-model="ruleForm.appartno"  placeholder="新建后自动生成" disabled ></el-input>
               </el-form-item>
               <el-form-item label="配件名称:" prop="apcname">
-                <el-input v-model="ruleForm.apcname" placeholder="请输入配件名称"></el-input>
+                <el-input v-model="ruleForm.appartname" placeholder="请输入配件名称"></el-input>
               </el-form-item>
               <el-form-item label="配件标准:">
-                <el-select v-model="ruleForm.region" placeholder="请选择配件标准">
+                <el-select v-model="ruleForm.appartattribute" placeholder="请选择配件标准">
                 <el-option label="区域一" value="shanghai"></el-option>
                 <el-option label="区域二" value="beijing"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="配件类别:">
-                <el-select v-model="ruleForm.region" placeholder="请选择配件类别">
+                <el-select v-model="ruleForm.apparttype" placeholder="请选择配件类别">
                 <el-option label="区域一" value="shanghai"></el-option>
                 <el-option label="区域二" value="beijing"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="品牌:" prop="apcaddress">
-                <el-input v-model="ruleForm.apcaddress" placeholder="请输入配件地址"></el-input>
+              <el-form-item label="品牌:" prop="appartbrand">
+                <el-input v-model="ruleForm.appartbrand" placeholder="请输入配件品牌"></el-input>
               </el-form-item>
             </div>
             <div class="div-right item-half">
-              <el-form-item label="件号:" prop="apccontactname">
-                <el-input v-model="ruleForm.apccontactname" placeholder="请输入件号"></el-input>
+              <el-form-item label="件号:" prop="appartunionno">
+                <el-input v-model="ruleForm.appartunionno" placeholder="请输入件号"></el-input>
               </el-form-item>
-              <el-form-item label="规格:" prop="apccontacttelno">
-                <el-input v-model="ruleForm.apccontacttelno" placeholder="请输入规格"></el-input>
+              <el-form-item label="规格:" prop="appartspec">
+                <el-input v-model="ruleForm.appartspec" placeholder="请输入规格"></el-input>
               </el-form-item>
-              <el-form-item label="单位:" prop="apcloginname">
-                <el-input v-model="ruleForm.apcloginname" placeholder="请输入单位"></el-input>
+              <el-form-item label="单位:" prop="appartunit">
+                <el-input v-model="ruleForm.appartunit" placeholder="请输入单位"></el-input>
               </el-form-item>
-              <el-form-item label="销价:" prop="apcloginpwd" class="input-flex">
-                <el-input type="password" v-model="ruleForm.apcloginpwd" placeholder="请输入销价"></el-input>
+              <el-form-item label="销价:" prop="appartprice" class="input-flex">
+                <el-input type="number" v-model="ruleForm.appartprice" placeholder="请输入销价"></el-input>
                 <span>元</span>
               </el-form-item>
             </div>
@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import { partDetail } from '@/api/Api'
 export default {
   name: 'add-edit',
   props: {
@@ -63,9 +64,9 @@ export default {
       type: Boolean,
       default: false
     },
-    parts: {
-      type: String,
-      default: ''
+    partsId: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -90,15 +91,16 @@ export default {
     }
     return {
       ruleForm: {
-        apcno: '', // 配件编号
-        apcname: '', // 配件名称
-        apcaddress: '', // 配件地址
-        apcphone: '', // 配件电话
-        apccontactname: '', // 联系人
-        apccontacttelno: '', // 联系人电话
-        apcloginname: '', // 登录账号
-        apcloginpwd: '', // 密码
-        apcloginpwdsure: '', // 请确认密码
+        appartid: 0,
+        appartno: '', // 配件编号
+        appartname: '', // 配件名称
+        appartattribute: '', // 配件标准
+        apparttype: '', // 配件类别
+        appartbrand: '', // 配件品牌
+        appartunionno: '', // 配件件号
+        appartspec: '', // 配件规格
+        appartunit: '', // 配件单位
+        appartprice: '', // 配件销价
         apcremark: ''// 备注
       },
       rules: {
@@ -135,6 +137,18 @@ export default {
   computed: {
     dialogAddAndEditPartsVisible: {
       get() {
+        if (this.dialogShow) {
+          switch (this.partsId) {
+            case 0:
+              // 创建
+              console.log(this.partsId)
+              break
+            default:
+              // 编辑
+              this.editInfo()
+              break
+          }
+        }
         return this.dialogShow
       },
       set(value) {
@@ -155,12 +169,33 @@ export default {
         }
       })
     },
+    editInfo() {
+      const data = { appartid: this.partsId }
+      return new Promise((resolve, reject) => {
+        partDetail(data).then(res => {
+          if (res.status === 0) {
+            this.ruleForm = res.data
+          } else {
+            this.$notify({
+              showClose: true,
+              message: res.msg,
+              type: 'warning',
+              offset: 100,
+              duration: 2000
+            })
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
     resetForm(formName) {
       this.$refs[formName].resetFields()
       this.$emit('close')
     },
     clearData(formName) {
       this.resetForm(formName)
+      this.$emit('close')
     }
   }
 }

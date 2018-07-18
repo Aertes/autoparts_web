@@ -56,3 +56,30 @@ export function storeDetail(params) {
   })
 }
 /* ******************门店end**********************/
+
+/* ******************配件star**********************/
+// 配件列表
+export function partList(params) {
+  return request({
+    url: '/part/enquirylist',
+    method: 'post',
+    data: params
+  })
+}
+// 配件删除
+export function partDel(params) {
+  return request({
+    url: '/part/updatepartflag',
+    method: 'post',
+    data: params
+  })
+}
+// 配件详情
+export function partDetail(params) {
+  return request({
+    url: '/part/partinfo',
+    method: 'post',
+    data: params
+  })
+}
+/* ******************配件end**********************/

@@ -29,7 +29,7 @@
     <el-row>
       <el-button type="primary" @click="create">新建门店</el-button>
     </el-row>
-    <el-table :data="tableData" border-bottom style="width: 100%" >
+    <el-table :data="tableData" border-bottom style="width: 100%" v-loading="loading">
       <el-table-column prop="apcno" align="left" label="门店编号"></el-table-column>
       <el-table-column prop="apcname" align="left" label="门店名称"></el-table-column>
       <el-table-column prop="apcaddress" align="left" label="地址"></el-table-column>
@@ -93,12 +93,11 @@ export default {
       const data = this.search
       return new Promise((resolve, reject) => {
         storeList(data).then(res => {
+          this.loading = false
           if (res.status === 0) {
-            this.loading = true
             this.search.page = res.currpage
             this.search.total = res.totalrecords
             this.tableData = res.datalist
-            // console.log(this.tableData)
           } else {
             this.$notify({
               showClose: true,
@@ -109,6 +108,7 @@ export default {
             })
           }
         }).catch(error => {
+          this.loading = false
           reject(error)
         })
       })
@@ -121,7 +121,6 @@ export default {
       Object.keys(searchData).forEach((key, i) => {
         searchData[key] = ''
       })
-
       this.initTableData()
     },
     edit(row) {
