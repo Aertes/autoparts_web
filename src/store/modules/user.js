@@ -42,9 +42,9 @@ const user = {
 
     // 登出
     LogOut({ commit, state }) {
-      // const tokens = { accesstoken: state.token }
+      const tokens = { accesstoken: state.token }
       return new Promise((resolve, reject) => {
-        logout().then(() => {
+        logout(tokens).then(() => {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
           removeToken()

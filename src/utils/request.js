@@ -31,7 +31,7 @@ service.interceptors.response.use(
     const res = response.data
     if (res.status !== 0) {
       Message({
-        message: res.message,
+        message: res.msg,
         type: 'error',
         duration: 5 * 1000
       })
@@ -45,6 +45,8 @@ service.interceptors.response.use(
           store.dispatch('FedLogOut').then(() => {
             location.reload()// 为了重新实例化vue-router对象 避免bug
           })
+        }).catch((err) => {
+          console.log(err)
         })
       }
       return Promise.reject('error')
@@ -55,7 +57,7 @@ service.interceptors.response.use(
   error => {
     console.log('err' + error)// for debug
     Message({
-      message: error.message,
+      message: error.msg,
       type: 'error',
       duration: 5 * 1000
     })

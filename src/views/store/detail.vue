@@ -62,7 +62,6 @@
 
 <script>
 import { storeDetail } from '@/api/Api'
-import store from '@/store'
 export default {
   name: 'detail',
   props: {
@@ -71,13 +70,13 @@ export default {
       default: false
     },
     storeId: {
-      type: String,
+      type: Number,
       default: 0
     }
   },
   data() {
     return {
-      storeData: null
+      storeData: ''
     }
   },
   computed: {
@@ -100,22 +99,16 @@ export default {
       const data = { apcid: this.storeId }
       return new Promise((resolve, reject) => {
         storeDetail(data).then(res => {
-          if (res.status !== -1) {
-            if (res.status === 0) {
-              console.log(res.data)
-              this.storeData = res.data
-            } else {
-              this.$notify({
-                showClose: true,
-                message: res.msg,
-                type: 'warning',
-                offset: 100,
-                duration: 2000
-              })
-            }
+          if (res.status === 0) {
+            console.log(res.data)
+            this.storeData = res.data
           } else {
-            store.dispatch('FedLogOut').then(() => {
-              location.reload()// 为了重新实例化vue-router对象 避免bug
+            this.$notify({
+              showClose: true,
+              message: res.msg,
+              type: 'warning',
+              offset: 100,
+              duration: 2000
             })
           }
         }).catch(error => {

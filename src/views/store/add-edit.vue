@@ -16,12 +16,12 @@
               <el-form-item label="电话:" prop="apcphone">
                 <el-input v-model="ruleForm.apcphone" placeholder="请输入门店电话"></el-input>
               </el-form-item>
-              <el-form-item label="类别:">
+              <!-- <el-form-item label="类别:">
                 <el-select v-model="ruleForm.region" placeholder="请选择门店类别">
                 <el-option label="区域一" value="shanghai"></el-option>
                 <el-option label="区域二" value="beijing"></el-option>
                 </el-select>
-              </el-form-item>
+              </el-form-item> -->
             </div>
             <div class="div-right item-half">
               <el-form-item label="联系人:" prop="apccontactname">
@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import { storeDetail } from '@/api/Api'
 export default {
   name: 'add-edit',
   props: {
@@ -63,8 +64,8 @@ export default {
       default: false
     },
     storeId: {
-      type: String,
-      default: ''
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -100,6 +101,9 @@ export default {
         apcloginpwdsure: '', // 请确认密码
         apcremark: ''// 备注
       },
+      apcloginname: true,
+      apcloginpwd: true,
+      apcloginpwdsure: true,
       rules: {
         apcname: [
           { required: true, message: '请输入门店名称', trigger: 'blur' }
@@ -134,6 +138,18 @@ export default {
   computed: {
     dialogAddAndEditStoreVisible: {
       get() {
+        if (this.dialogShow) {
+          switch (this.storeId) {
+            case 0:
+              // 创建
+              console.log(this.storeId)
+              break
+            default:
+              // 编辑
+              this.editInfo()
+              break
+          }
+        }
         return this.dialogShow
       },
       set(value) {
@@ -144,6 +160,27 @@ export default {
     }
   },
   methods: {
+    editInfo() {
+      const data = { apcid: this.storeId }
+      return new Promise((resolve, reject) => {
+        storeDetail(data).then(res => {
+          if (res.status === 0) {
+            console.log(res.data)
+            this.ruleForm = res.data
+          } else {
+            this.$notify({
+              showClose: true,
+              message: res.msg,
+              type: 'warning',
+              offset: 100,
+              duration: 2000
+            })
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -160,6 +197,7 @@ export default {
     },
     clearData(formName) {
       this.resetForm(formName)
+      this.$emit('close')
       // this.ruleForm = {
       //   apcno: '', // 门店编号
       //   apcname: '', // 门店名称

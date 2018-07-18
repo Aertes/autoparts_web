@@ -3,13 +3,13 @@
     <el-form ref="form" :model="search" label-width="100px" class="clearfix">
       <div class="search-row clearfix">
         <el-form-item label="门店编号:" class="fl">
-          <el-input v-model="search.name" placeholder="请输入门店编号"></el-input>
+          <el-input v-model="search.data.apcno" placeholder="请输入门店编号"></el-input>
         </el-form-item>
         <el-form-item label="门店名称:" class="fl">
-          <el-input v-model="search.name" placeholder="请输入门店名称"></el-input>
+          <el-input v-model="search.data.apcname" placeholder="请输入门店名称"></el-input>
         </el-form-item>
         <el-form-item label="门店电话:" class="fl">
-          <el-input v-model="search.name" placeholder="请输入门店电话"></el-input>
+          <el-input v-model="search.data.apcphone" placeholder="请输入门店电话"></el-input>
         </el-form-item>
         <!-- <el-form-item label="类别:" class="fl">
           <el-select v-model="search.region" placeholder="请选择类别">
@@ -18,7 +18,7 @@
           </el-select>
         </el-form-item> -->
         <el-form-item label="备注:"  class="fl w38">
-          <el-input  v-model="search.desc" placeholder="请输入备注"></el-input>
+          <el-input  v-model="search.data.apcremark" placeholder="请输入备注"></el-input>
         </el-form-item>
       </div>
       <el-form-item class="btn">
@@ -44,7 +44,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
+    <el-pagination v-show="tableData.length !== 0"
       class="pagination"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -62,8 +62,6 @@
 import AddEditDialog from './add-edit'
 import DetailDialog from './detail'
 import { storeList } from '@/api/Api'
-import store from '@/store'
-// import Api from '@/api/Api'
 export default {
   data() {
     return {
@@ -81,7 +79,7 @@ export default {
         sord: 'desc'
       },
       tableData: [],
-      storeId: '',
+      storeId: 0,
       DialogShow: false,
       DialogDetailShow: false
     }
@@ -95,23 +93,19 @@ export default {
       const data = this.search
       return new Promise((resolve, reject) => {
         storeList(data).then(res => {
-          if (res.status !== -1) {
-            if (res.status === 0) {
-              this.search.page = res.totalpages
-              this.search.total = res.totalrecords
-              this.tableData = res.datalist
-            } else {
-              this.$notify({
-                showClose: true,
-                message: res.msg,
-                type: 'warning',
-                offset: 100,
-                duration: 2000
-              })
-            }
+          if (res.status === 0) {
+            this.loading = true
+            this.search.page = res.currpage
+            this.search.total = res.totalrecords
+            this.tableData = res.datalist
+            // console.log(this.tableData)
           } else {
-            store.dispatch('FedLogOut').then(() => {
-              location.reload()// 为了重新实例化vue-router对象 避免bug
+            this.$notify({
+              showClose: true,
+              message: res.msg,
+              type: 'warning',
+              offset: 100,
+              duration: 2000
             })
           }
         }).catch(error => {
@@ -120,37 +114,43 @@ export default {
       })
     },
     onSearch() {
-      this.$message('submit!')
+      this.initTableData()
     },
     onCancel() {
-      const searchData = this.search
+      const searchData = this.search.data
       Object.keys(searchData).forEach((key, i) => {
         searchData[key] = ''
       })
+
+      this.initTableData()
     },
     edit(row) {
-      console.log(row)
-      this.storeId = `${row.apcid}`
+      this.storeId = parseInt(row.apcid)
       this.DialogShow = true
     },
     create() {
+      this.storeId = 0
       this.DialogShow = true
     },
     DialogHide() {
       this.DialogShow = false
-      this.storeId = ''
+      this.storeId = 0
     },
     detail(row) {
-      this.storeId = `${row.apcid}`
+      this.storeId = parseInt(row.apcid)
       this.DialogDetailShow = true
     },
     DialogDetailHide() {
       this.DialogDetailShow = false
     },
     handleSizeChange(val) {
+      this.search.rows = val
+      this.initTableData()
       console.log(`每页 ${val} 条`)
     },
     handleCurrentChange(val) {
+      this.search.page = val
+      this.initTableData()
       console.log(`当前页: ${val}`)
     }
   },

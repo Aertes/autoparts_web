@@ -38,6 +38,7 @@
         :show-file-list="false"
         :on-success="fileUploadSuccess"
         :before-upload="beforeFileUpload"
+        :headers="headers"
         method:="post"
         accept=''>
         <el-button type="primary">导入</el-button>
@@ -79,6 +80,7 @@
 <script>
 import AddEditDialog from './add-edit'
 import DetailDialog from './detail'
+import { getToken } from '@/utils/auth'
 export default {
   data() {
     return {
@@ -217,7 +219,8 @@ export default {
       DialogDetailShow: false,
       loading: false,
       fileList: [],
-      uploadUrl: process.env.BASE_API + '/files/upload'
+      uploadUrl: process.env.BASE_API + '/files/upload',
+      headers: { auth: JSON.stringify({ accesstoken: getToken(), status: 1 }) }
     }
   },
   created() {
@@ -271,6 +274,7 @@ export default {
       }
     },
     beforeFileUpload(file) {
+      console.log(this.headers)
       if (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
         return true
       } else {
