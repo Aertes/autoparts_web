@@ -6,19 +6,15 @@
             <div class="div-left item-half">
               <el-form-item label="配件编号:">
                 <span>{{storeData.apcno}}</span>
-                <!-- <el-input v-model="storeData.apcno"  placeholder="新建后自动生成" disabled ></el-input> -->
               </el-form-item>
               <el-form-item label="配件名称:" prop="apcname">
                 <span>{{storeData.apcname}}</span>
-                <!-- <el-input v-model="storeData.apcname" placeholder="请输入门店名称"></el-input> -->
               </el-form-item>
               <el-form-item label="配件标准:" prop="apcaddress">
                 <span>{{storeData.apcaddress}}</span>
-                <!-- <el-input v-model="storeData.apcaddress" placeholder="请输入门店地址"></el-input> -->
               </el-form-item>
               <el-form-item label="配件类别:" prop="apcphone">
                 <span>{{storeData.apcphone}}</span>
-                <!-- <el-input v-model="storeData.apcphone" placeholder="请输入门店电话"></el-input> -->
               </el-form-item>
               <el-form-item label="品牌:">
                 <span>{{storeData.region}}</span>
@@ -31,28 +27,20 @@
             <div class="div-right item-half">
               <el-form-item label="件号:" prop="apccontactname">
                 <span>{{storeData.apccontactname}}</span>
-                <!-- <el-input v-model="storeData.apccontactname" placeholder="请输入联系姓名"></el-input> -->
               </el-form-item>
               <el-form-item label="规格:" prop="apccontacttelno">
                 <span>{{storeData.apccontacttelno}}</span>
-                <!-- <el-input v-model="storeData.apccontacttelno" placeholder="请输入联系人电话"></el-input> -->
               </el-form-item>
               <el-form-item label="单位:" prop="apcloginname">
                 <span>{{storeData.apcloginname}}</span>
-                <!-- <el-input v-model="storeData.apcloginname" placeholder="请输登录账号"></el-input> -->
               </el-form-item>
               <el-form-item label="销价:" prop="apcloginpwd">
                 <span>{{storeData.apcloginpwd}} 元</span>
-                <!-- <el-input type="password" v-model="storeData.apcloginpwd" placeholder="请输入密码" auto-complete="off"></el-input> -->
               </el-form-item>
-              <!-- <el-form-item label="确认密码:" prop="apcloginpwdsure">
-                <el-input type="password" v-model="storeData.apcloginpwdsure" placeholder="请输入确认密码" auto-complete="off"></el-input>
-              </el-form-item> -->
             </div>
           </div>
           <el-form-item label="备注:" prop="apcremark">
               <span>{{storeData.apcremark}}</span>
-              <!-- <el-input type="textarea" v-model="storeData.apcremark" placeholder="请输入备注"></el-input> -->
           </el-form-item>
         </el-form>
     </el-dialog>
@@ -69,7 +57,7 @@ export default {
       default: false
     },
     companyId: {
-      type: String,
+      type: Number,
       default: 0
     }
   },

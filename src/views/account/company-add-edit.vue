@@ -64,30 +64,11 @@ export default {
       default: false
     },
     companyId: {
-      type: String,
-      default: ''
+      type: Number,
+      default: 0
     }
   },
   data() {
-    const validatePass = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入密码'))
-      } else {
-        if (this.ruleForm.apcloginpwdsure !== '') {
-          this.$refs.ruleForm.validateField('apcloginpwdsure')
-        }
-        callback()
-      }
-    }
-    const validatePass2 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请再次输入密码'))
-      } else if (value !== this.ruleForm.apcloginpwd) {
-        callback(new Error('两次输入密码不一致!'))
-      } else {
-        callback()
-      }
-    }
     return {
       ruleForm: {
         apcno: '', // 配件编号
@@ -121,10 +102,10 @@ export default {
           { required: true, message: '请输登录账号', trigger: 'change' }
         ],
         apcloginpwd: [
-          { required: true, validator: validatePass, trigger: 'change' }
+          { required: true, trigger: 'change' }
         ],
         apcloginpwdsure: [
-          { required: true, validator: validatePass2, trigger: 'change' }
+          { required: true, trigger: 'change' }
         ],
         apcremark: [
           { trigger: 'change' }

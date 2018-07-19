@@ -118,13 +118,13 @@ export function accountUserAbolish(params) {
   })
 }
 // 账户详情
-// export function partsDetail(params) {
-//   return request({
-//     url: '/part/partinfo',
-//     method: 'post',
-//     data: params
-//   })
-// }
+export function accountUserDetail(params) {
+  return request({
+    url: '/account/accountinfo',
+    method: 'post',
+    data: params
+  })
+}
 // 账户增改
 export function accountUserAddOrEdit(params) {
   return request({
@@ -133,5 +133,47 @@ export function accountUserAddOrEdit(params) {
     data: params
   })
 }
-
 /* ******************账户管理end**********************/
+
+/* ******************公司管理star**********************/
+// 公司列表
+export function companyList(params) {
+  return request({
+    url: '/company/companylist',
+    method: 'post',
+    data: params
+  })
+}
+// 公司作废
+export function companyAbolish(params) {
+  return request({
+    url: '/company/updatecompanyflag',
+    method: 'post',
+    data: params
+  })
+}
+// 公司详情
+export function companyDetail(params) {
+  return request({
+    url: '/company/companyinfo',
+    method: 'post',
+    data: params
+  })
+}
+// 公司增改
+export function companyAddOrEdit(params) {
+  return request({
+    url: '/company/insertcompany',
+    method: 'post',
+    data: params
+  })
+}
+// 公司信息 select
+export function getCompanySelect(params) {
+  return request({
+    url: '/company/getcompany',
+    method: 'post',
+    data: params
+  })
+}
+/* ******************公司管理end**********************/

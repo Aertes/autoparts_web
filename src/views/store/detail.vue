@@ -6,53 +6,37 @@
             <div class="div-left item-half">
               <el-form-item label="门店编号:">
                 <span>{{storeData.apcno}}</span>
-                <!-- <el-input v-model="storeData.apcno"  placeholder="新建后自动生成" disabled ></el-input> -->
               </el-form-item>
               <el-form-item label="门店名称:" prop="apcname">
                 <span>{{storeData.apcname}}</span>
-                <!-- <el-input v-model="storeData.apcname" placeholder="请输入门店名称"></el-input> -->
               </el-form-item>
               <el-form-item label="地址:" prop="apcaddress">
                 <span>{{storeData.apcaddress}}</span>
-                <!-- <el-input v-model="storeData.apcaddress" placeholder="请输入门店地址"></el-input> -->
               </el-form-item>
               <el-form-item label="电话:" prop="apcphone">
                 <span>{{storeData.apcphone}}</span>
-                <!-- <el-input v-model="storeData.apcphone" placeholder="请输入门店电话"></el-input> -->
               </el-form-item>
               <el-form-item label="类别:">
                 <span>{{storeData.region}}</span>
-                <!-- <el-select v-model="storeData.region" placeholder="请选择门店类别">
-                    <el-option label="区域一" value="shanghai"></el-option>
-                    <el-option label="区域二" value="beijing"></el-option>
-                </el-select> -->
               </el-form-item>
             </div>
             <div class="div-right item-half">
               <el-form-item label="联系人:" prop="apccontactname">
                 <span>{{storeData.apccontactname}}</span>
-                <!-- <el-input v-model="storeData.apccontactname" placeholder="请输入联系姓名"></el-input> -->
               </el-form-item>
               <el-form-item label="联系人电话:" prop="apccontacttelno">
                 <span>{{storeData.apccontacttelno}}</span>
-                <!-- <el-input v-model="storeData.apccontacttelno" placeholder="请输入联系人电话"></el-input> -->
               </el-form-item>
               <el-form-item label="登录账号:" prop="apcloginname">
                 <span>{{storeData.apcloginname}}</span>
-                <!-- <el-input v-model="storeData.apcloginname" placeholder="请输登录账号"></el-input> -->
               </el-form-item>
               <el-form-item label="密码:" prop="apcloginpwd">
                 <span>{{storeData.apcloginpwd}}</span>
-                <!-- <el-input type="password" v-model="storeData.apcloginpwd" placeholder="请输入密码" auto-complete="off"></el-input> -->
               </el-form-item>
-              <!-- <el-form-item label="确认密码:" prop="apcloginpwdsure">
-                <el-input type="password" v-model="storeData.apcloginpwdsure" placeholder="请输入确认密码" auto-complete="off"></el-input>
-              </el-form-item> -->
             </div>
           </div>
           <el-form-item label="备注:" prop="apcremark">
               <span>{{storeData.apcremark}}</span>
-              <!-- <el-input type="textarea" v-model="storeData.apcremark" placeholder="请输入备注"></el-input> -->
           </el-form-item>
         </el-form>
     </el-dialog>
