@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { storeDetail } from '@/api/Api'
+import { storeDetail, storeAddOrEdit } from '@/api/Api'
 export default {
   name: 'add-edit',
   props: {
@@ -90,6 +90,7 @@ export default {
     }
     return {
       ruleForm: {
+        apcid: this.storeId,
         apcno: '', // 门店编号
         apcname: '', // 门店名称
         apcaddress: '', // 门店地址
@@ -103,7 +104,6 @@ export default {
       },
       apcloginname: true,
       apcloginpwd: true,
-      apcloginpwdsure: true,
       rules: {
         apcname: [
           { required: true, message: '请输入门店名称', trigger: 'blur' }
@@ -139,15 +139,8 @@ export default {
     dialogAddAndEditStoreVisible: {
       get() {
         if (this.dialogShow) {
-          switch (this.storeId) {
-            case 0:
-              // 创建
-              console.log(this.storeId)
-              break
-            default:
-              // 编辑
-              this.editInfo()
-              break
+          if (this.storeId !== 0) {
+            this.editInfo()
           }
         }
         return this.dialogShow
@@ -167,14 +160,9 @@ export default {
           if (res.status === 0) {
             console.log(res.data)
             this.ruleForm = res.data
+            this.ruleForm.apcloginpwdsure = res.data.apcloginpwd
           } else {
-            this.$notify({
-              showClose: true,
-              message: res.msg,
-              type: 'warning',
-              offset: 100,
-              duration: 2000
-            })
+            this.$message.error(res.msg)
           }
         }).catch(error => {
           reject(error)
@@ -184,7 +172,19 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          return new Promise((resolve, reject) => {
+            storeAddOrEdit(this.ruleForm).then(res => {
+              if (res.status === 0) {
+                this.$message.success(res.msg)
+                this.$emit('success')
+                this.$emit('close')
+              } else {
+                this.$message.error(res.msg)
+              }
+            }).catch(error => {
+              reject(error)
+            })
+          })
         } else {
           console.log('error submit!!')
           return false
@@ -194,22 +194,14 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields()
       this.$emit('close')
+      this.ruleForm.apcno = ''
+      this.ruleForm.apcid = 0
     },
     clearData(formName) {
       this.resetForm(formName)
       this.$emit('close')
-      // this.ruleForm = {
-      //   apcno: '', // 门店编号
-      //   apcname: '', // 门店名称
-      //   apcaddress: '', // 门店地址
-      //   apcphone: '', // 门店电话
-      //   apccontactname: '', // 联系人
-      //   apccontacttelno: '', // 联系人电话
-      //   apcloginname: '', // 登录账号
-      //   apcloginpwd: '', // 密码
-      //   apcloginpwdsure: '', // 请确认密码
-      //   apcremark: ''// 备注
-      // }
+      this.ruleForm.apcno = ''
+      this.ruleForm.apcid = 0
     }
   }
 }

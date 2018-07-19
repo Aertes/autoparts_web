@@ -103,13 +103,7 @@ export default {
             console.log(res.data)
             this.storeData = res.data
           } else {
-            this.$notify({
-              showClose: true,
-              message: res.msg,
-              type: 'warning',
-              offset: 100,
-              duration: 2000
-            })
+            this.$message.error(res.msg)
           }
         }).catch(error => {
           reject(error)
@@ -118,18 +112,6 @@ export default {
     },
     clearData() {
       this.$emit('close')
-      // this.storeData = {
-      //   apcno: '', // 门店编号
-      //   apcname: '', // 门店名称
-      //   apcaddress: '', // 门店地址
-      //   apcphone: '', // 门店电话
-      //   apccontactname: '', // 联系人
-      //   apccontacttelno: '', // 联系人电话
-      //   apcloginname: '', // 登录账号
-      //   apcloginpwd: '', // 密码
-      //   apcloginpwdsure: '', // 请确认密码
-      //   apcremark: ''// 备注
-      // }
     }
   }
 }

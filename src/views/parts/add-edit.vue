@@ -4,19 +4,19 @@
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
           <div class="div-warp">
             <div class="div-left item-half">
-              <el-form-item label="配件编号:">
+              <el-form-item label="配件编号:" prop="appartno">
                 <el-input v-model="ruleForm.appartno"  placeholder="新建后自动生成" disabled ></el-input>
               </el-form-item>
-              <el-form-item label="配件名称:" prop="apcname">
+              <el-form-item label="配件名称:" prop="appartname">
                 <el-input v-model="ruleForm.appartname" placeholder="请输入配件名称"></el-input>
               </el-form-item>
-              <el-form-item label="配件标准:">
+              <el-form-item label="配件标准:" prop="appartattribute">
                 <el-select v-model="ruleForm.appartattribute" placeholder="请选择配件标准">
                 <el-option label="区域一" value="shanghai"></el-option>
                 <el-option label="区域二" value="beijing"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="配件类别:">
+              <el-form-item label="配件类别:" prop="apparttype">
                 <el-select v-model="ruleForm.apparttype" placeholder="请选择配件类别">
                 <el-option label="区域一" value="shanghai"></el-option>
                 <el-option label="区域二" value="beijing"></el-option>
@@ -42,8 +42,8 @@
               </el-form-item>
             </div>
           </div>
-          <el-form-item label="备注:" prop="apcremark">
-              <el-input type="textarea" v-model="ruleForm.apcremark" placeholder="请输入备注"></el-input>
+          <el-form-item label="备注:" prop="appartremark">
+              <el-input type="textarea" v-model="ruleForm.appartremark" placeholder="请输入备注"></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { partDetail } from '@/api/Api'
+import { partsDetail, partsAddOrEdit } from '@/api/Api'
 export default {
   name: 'add-edit',
   props: {
@@ -70,28 +70,9 @@ export default {
     }
   },
   data() {
-    const validatePass = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入密码'))
-      } else {
-        if (this.ruleForm.apcloginpwdsure !== '') {
-          this.$refs.ruleForm.validateField('apcloginpwdsure')
-        }
-        callback()
-      }
-    }
-    const validatePass2 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请再次输入密码'))
-      } else if (value !== this.ruleForm.apcloginpwd) {
-        callback(new Error('两次输入密码不一致!'))
-      } else {
-        callback()
-      }
-    }
     return {
       ruleForm: {
-        appartid: 0,
+        appartid: this.partsId,
         appartno: '', // 配件编号
         appartname: '', // 配件名称
         appartattribute: '', // 配件标准
@@ -101,34 +82,37 @@ export default {
         appartspec: '', // 配件规格
         appartunit: '', // 配件单位
         appartprice: '', // 配件销价
-        apcremark: ''// 备注
+        appartremark: ''// 备注
       },
       rules: {
-        apcname: [
-          { required: true, message: '请输入配件名称', trigger: 'blur' }
+        appartno: [
+          { trigger: 'blur' }
         ],
-        apcaddress: [
-          { required: true, message: '请输入配件地址', trigger: 'change' }
+        appartname: [
+          { required: false, message: '请输入配件名称', trigger: 'change' }
         ],
-        apcphone: [
-          { trigger: 'change' }
+        appartattribute: [
+          { required: false, message: '请选择配件标准', trigger: 'change' }
         ],
-        apccontactname: [
-          { required: true, message: '请输入联系姓名', trigger: 'change' }
+        apparttype: [
+          { required: false, message: '请选择配件类别', trigger: 'change' }
         ],
-        apccontacttelno: [
-          { required: true, message: '请输入联系人电话', trigger: 'change' }
+        appartbrand: [
+          { required: false, message: '请输入配件品牌', trigger: 'change' }
         ],
-        apcloginname: [
-          { required: true, message: '请输登录账号', trigger: 'change' }
+        appartunionno: [
+          { required: false, message: '请输入配件件号', trigger: 'change' }
         ],
-        apcloginpwd: [
-          { required: true, validator: validatePass, trigger: 'change' }
+        appartspec: [
+          { required: false, message: '请输入配件规格', trigger: 'change' }
         ],
-        apcloginpwdsure: [
-          { required: true, validator: validatePass2, trigger: 'change' }
+        appartunit: [
+          { required: false, message: '请输入配件单位', trigger: 'change' }
         ],
-        apcremark: [
+        appartprice: [
+          { required: false, message: '请输入配件销价', trigger: 'change' }
+        ],
+        appartremark: [
           { trigger: 'change' }
         ]
       }
@@ -138,15 +122,8 @@ export default {
     dialogAddAndEditPartsVisible: {
       get() {
         if (this.dialogShow) {
-          switch (this.partsId) {
-            case 0:
-              // 创建
-              console.log(this.partsId)
-              break
-            default:
-              // 编辑
-              this.editInfo()
-              break
+          if (this.partsId !== 0) {
+            this.editInfo()
           }
         }
         return this.dialogShow
@@ -162,7 +139,17 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          return new Promise((resolve, reject) => {
+            partsAddOrEdit(this.ruleForm).then(res => {
+              if (res.status === 0) {
+                this.$message.success('修改成功')
+                this.$emit('success')
+                this.$emit('close')
+              } else {
+                this.$message.error(res.msg)
+              }
+            })
+          })
         } else {
           console.log('error submit!!')
           return false
@@ -172,17 +159,11 @@ export default {
     editInfo() {
       const data = { appartid: this.partsId }
       return new Promise((resolve, reject) => {
-        partDetail(data).then(res => {
+        partsDetail(data).then(res => {
           if (res.status === 0) {
             this.ruleForm = res.data
           } else {
-            this.$notify({
-              showClose: true,
-              message: res.msg,
-              type: 'warning',
-              offset: 100,
-              duration: 2000
-            })
+            this.$message.error(res.msg)
           }
         }).catch(error => {
           reject(error)
@@ -192,10 +173,14 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields()
       this.$emit('close')
+      this.ruleForm.appartno = ''
+      this.ruleForm.appartid = 0
     },
     clearData(formName) {
       this.resetForm(formName)
       this.$emit('close')
+      this.ruleForm.appartno = ''
+      this.ruleForm.appartid = 0
     }
   }
 }

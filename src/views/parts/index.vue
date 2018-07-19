@@ -73,7 +73,7 @@
       layout="prev, pager, next, jumper"
       :total="search.total">
     </el-pagination>
-    <add-edit-dialog :dialogShow="DialogShow" @close="DialogHide" @success="tableData" :partsId='partsId'></add-edit-dialog>
+    <add-edit-dialog :dialogShow="DialogShow" @close="DialogHide" @success="initTableData" :partsId='partsId'></add-edit-dialog>
     <detail-dialog :dialogDetailShow="DialogDetailShow" @close="DialogDetailHide" :partsId='partsId'></detail-dialog>
   </div>
 </template>
@@ -81,7 +81,7 @@
 import AddEditDialog from './add-edit'
 import DetailDialog from './detail'
 import { getToken } from '@/utils/auth'
-import { partList, partDel } from '@/api/Api'
+import { partsList, partsDel } from '@/api/Api'
 export default {
   data() {
     return {
@@ -116,7 +116,7 @@ export default {
       this.loading = true
       const data = this.search
       return new Promise((resolve, reject) => {
-        partList(data).then(res => {
+        partsList(data).then(res => {
           this.loading = false
           if (res.status === 0) {
             this.search.page = res.currpage
@@ -124,13 +124,7 @@ export default {
             this.tableData = res.datalist
             // console.log(this.tableData)
           } else {
-            this.$notify({
-              showClose: true,
-              message: res.msg,
-              type: 'warning',
-              offset: 100,
-              duration: 2000
-            })
+            this.$message.error(res.msg)
           }
         }).catch(error => {
           this.loading = false
@@ -160,19 +154,13 @@ export default {
         type: 'warning'
       }).then(() => {
         return new Promise((resolve, reject) => {
-          partDel({ appartid: appartid }).then(res => {
+          partsDel({ appartid: appartid }).then(res => {
             rows.splice(index, 1)
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            })
+            this.$message.success(res.msg)
           })
         })
       }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
+        this.$message.info('已取消删除')
       })
     },
     create() {
@@ -210,12 +198,10 @@ export default {
     handleSizeChange(val) {
       this.search.rows = val
       this.initTableData()
-      console.log(`每页 ${val} 条`)
     },
     handleCurrentChange(val) {
       this.search.page = val
       this.initTableData()
-      console.log(`每页 ${val} 条`)
     }
   },
   components: {

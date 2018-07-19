@@ -54,7 +54,7 @@
       layout="prev, pager, next, jumper"
       :total="search.total">
     </el-pagination>
-    <add-edit-dialog :dialogShow="DialogShow" @close="DialogHide" @success="tableData" :storeId='storeId'></add-edit-dialog>
+    <add-edit-dialog :dialogShow="DialogShow" @close="DialogHide" @success="initTableData" :storeId='storeId'></add-edit-dialog>
     <detail-dialog :dialogDetailShow="DialogDetailShow" @close="DialogDetailHide" :storeId='storeId'></detail-dialog>
   </div>
 </template>
@@ -99,13 +99,7 @@ export default {
             this.search.total = res.totalrecords
             this.tableData = res.datalist
           } else {
-            this.$notify({
-              showClose: true,
-              message: res.msg,
-              type: 'warning',
-              offset: 100,
-              duration: 2000
-            })
+            this.$message.error(res.msg)
           }
         }).catch(error => {
           this.loading = false

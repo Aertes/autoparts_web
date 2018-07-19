@@ -12,9 +12,9 @@
           <el-input v-model="search.name" placeholder="请输入公司名称"></el-input>
         </el-form-item>
         <el-form-item label="状态:" class="fl">
-          <el-select v-model="search.region" placeholder="请选择状态">
-            <el-option label="Zone one" value="shanghai"></el-option>
-            <el-option label="Zone two" value="beijing"></el-option>
+          <el-select v-model="search.region" placeholder="请选择状态" @change="initTableData">
+            <el-option label="可用" value="0"></el-option>
+            <el-option label="作废" value="1"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="管理品牌:" class="fl">
@@ -49,153 +49,39 @@
       class="pagination"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page="tablePage.page"
-      :page-size="tablePage.row"
+      :current-page="search.page"
+      :page-size="search.row"
       background
       layout="prev, pager, next, jumper"
-      :total="tablePage.total">
+      :total="search.total">
     </el-pagination>
-    <add-edit-dialog :dialogShow="DialogShow" @close="DialogHide" @success="tableData" :accountId='accountId'></add-edit-dialog>
+    <add-edit-dialog :dialogShow="DialogShow" @close="DialogHide" @success="initTableData" :accountId='accountId'></add-edit-dialog>
     <detail-dialog :dialogDetailShow="DialogDetailShow" @close="DialogDetailHide" :accountId='accountId'></detail-dialog>
   </div>
 </template>
 <script>
 import AddEditDialog from './user-add-edit'
 import DetailDialog from './user-detail'
+import { accountUserList, accountUserAbolish } from '@/api/Api'
 export default {
   data() {
     return {
       search: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
-      },
-      tableData: [
-        {
-          date: '2016-05-03',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-02',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }
-      ],
-      tablePage: {
+        data: {
+          apaccountname: '',
+          appartname: '',
+          appartattribute: '',
+          appartbrand: '',
+          apparttype: ''
+        },
         page: 1,
-        rows: 5,
-        total: 100
+        rows: 10,
+        total: 0,
+        sidx: '',
+        sord: 'desc'
       },
-      accountId: '',
+      tableData: [],
+      accountId: 0,
       DialogShow: false,
       DialogDetailShow: false,
       loading: false
@@ -206,7 +92,23 @@ export default {
   },
   methods: {
     initTableData() {
-      // this.loading = true
+      this.loading = true
+      return new Promise((resolve, reject) => {
+        accountUserList(this.search).then(res => {
+          this.loading = false
+          if (res.status === 0) {
+            this.search.page = res.currpage
+            this.search.total = res.totalrecords
+            this.tableData = res.datalist
+            // console.log(this.tableData)
+          } else {
+            this.$message.error(res.msg)
+          }
+        }).catch(error => {
+          this.loading = false
+          reject(error)
+        })
+      })
     },
     onSearch() {
       this.$message('submit!')

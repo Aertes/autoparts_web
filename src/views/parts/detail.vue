@@ -50,9 +50,9 @@
               </el-form-item> -->
             </div>
           </div>
-          <el-form-item label="备注:" prop="apcremark">
-              <span>{{partsData.apcremark}}</span>
-              <!-- <el-input type="textarea" v-model="partsData.apcremark" placeholder="请输入备注"></el-input> -->
+          <el-form-item label="备注:" prop="appartremark">
+              <span>{{partsData.appartremark}}</span>
+              <!-- <el-input type="textarea" v-model="partsData.appartremark" placeholder="请输入备注"></el-input> -->
           </el-form-item>
         </el-form>
     </el-dialog>
@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { partDetail } from '@/api/Api'
+import { partsDetail } from '@/api/Api'
 export default {
   name: 'detail',
   props: {
@@ -98,17 +98,11 @@ export default {
     detail() {
       const data = { appartid: this.partsId }
       return new Promise((resolve, reject) => {
-        partDetail(data).then(res => {
+        partsDetail(data).then(res => {
           if (res.status === 0) {
             this.partsData = res.data
           } else {
-            this.$notify({
-              showClose: true,
-              message: res.msg,
-              type: 'warning',
-              offset: 100,
-              duration: 2000
-            })
+            this.$message.error(res.msg)
           }
         }).catch(error => {
           reject(error)

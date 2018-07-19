@@ -69,7 +69,7 @@ export default {
       default: false
     },
     accountId: {
-      type: String,
+      type: Number,
       default: 0
     }
   },

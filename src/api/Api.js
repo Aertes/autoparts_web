@@ -55,11 +55,19 @@ export function storeDetail(params) {
     data: params
   })
 }
+// 门店增改
+export function storeAddOrEdit(params) {
+  return request({
+    url: '/client/insertclient',
+    method: 'post',
+    data: params
+  })
+}
 /* ******************门店end**********************/
 
 /* ******************配件star**********************/
 // 配件列表
-export function partList(params) {
+export function partsList(params) {
   return request({
     url: '/part/enquirylist',
     method: 'post',
@@ -67,7 +75,7 @@ export function partList(params) {
   })
 }
 // 配件删除
-export function partDel(params) {
+export function partsDel(params) {
   return request({
     url: '/part/updatepartflag',
     method: 'post',
@@ -75,11 +83,55 @@ export function partDel(params) {
   })
 }
 // 配件详情
-export function partDetail(params) {
+export function partsDetail(params) {
   return request({
     url: '/part/partinfo',
     method: 'post',
     data: params
   })
+}// 配件增改
+export function partsAddOrEdit(params) {
+  return request({
+    url: '/part/insertpart',
+    method: 'post',
+    data: params
+  })
 }
+
 /* ******************配件end**********************/
+
+/* ******************账户管理star**********************/
+// 账户列表
+export function accountUserList(params) {
+  return request({
+    url: '/account/accountlist',
+    method: 'post',
+    data: params
+  })
+}
+// 账户作废
+export function accountUserAbolish(params) {
+  return request({
+    url: '/account/updateaccountflag',
+    method: 'post',
+    data: params
+  })
+}
+// 账户详情
+// export function partsDetail(params) {
+//   return request({
+//     url: '/part/partinfo',
+//     method: 'post',
+//     data: params
+//   })
+// }
+// 账户增改
+export function accountUserAddOrEdit(params) {
+  return request({
+    url: '/account/insertaccount',
+    method: 'post',
+    data: params
+  })
+}
+
+/* ******************账户管理end**********************/
